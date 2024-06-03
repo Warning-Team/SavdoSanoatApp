@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             key: formkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
                   decoration: InputDecoration(
@@ -86,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
+                
                   obscureText: isPasswordVisablety,
                   decoration: InputDecoration(
                     labelText: 'Parol',
@@ -129,7 +131,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 Gap(10.h),
-                OutlinedButton(onPressed: saveLogin, child: Text("save"))
+                InkWell(
+                  onTap: saveLogin,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10.h),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.blue),
+                    child: Text(
+                      "Log in",
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
