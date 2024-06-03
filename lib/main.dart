@@ -17,6 +17,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return const ScreenUtilInit(
+      designSize: Size(360, 690),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: OnboardingScreen(),

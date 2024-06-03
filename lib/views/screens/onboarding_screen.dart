@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/login_screen.dart';
 
@@ -10,8 +11,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  // final mediaQuery = Mediaquery();
-
   @override
   void initState() {
     super.initState();
@@ -21,19 +20,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Image.asset(
-              "assets/onboarding/logo.png",
-
-              // height: mediaQuery.screenHeight(context),
-              // width: mediaQuery.screenWidth(context),
-              // fit: BoxFit.cover,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/onboarding/logo.png",
+                  height: 200.h,
+                  width: 200.w,
+                  fit: BoxFit.contain,
+                ),
+              ],
             ),
           ),
+          Text(
+            "O'zbekiston Savdo - Sanoat Palatasi",
+            style: TextStyle(fontSize: 20.sp, color: const Color.fromARGB(60, 238, 238, 238)),
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );
@@ -41,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 void navigateToNextPage(BuildContext context) {
-  Future.delayed(Duration(seconds: 1), () {
+  Future.delayed( const Duration(seconds: 1), () {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),

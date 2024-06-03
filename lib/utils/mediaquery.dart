@@ -1,15 +1,15 @@
 
 import 'package:flutter/material.dart';
 
-class Mediaquery{
+abstract class PhoneSize{
   
-  screenHeight(context){
+ static  screenHeight(context){
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     Size screenSize = mediaQueryData.size;
     double screenHeight = screenSize.height;
     return screenHeight;
   }
-  screenWidth(context){
+ static screenWidth(context){
      MediaQueryData mediaQueryData = MediaQuery.of(context);
     Size screenSize = mediaQueryData.size;
     double screenWidth = screenSize.width;

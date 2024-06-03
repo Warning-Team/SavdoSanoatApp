@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_screenutil: ^5.9.3
   json_annotation: ^4.9.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
+import 'package:savdosanoatapp/views/screens/home_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,22 +13,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey formkey = GlobalKey();
-  final mediaQuery = Mediaquery();
+  final formkey = GlobalKey<FormState>();
   bool isPasswordVisablety = true;
   String logindata = "";
   String passworddata = "";
 
   saveLogin() {
-    // if (formkey.currentState.activate) {}
+    if (formkey.currentState!.validate()) {
+      formkey.currentState!.save();
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: mediaQuery.screenHeight(context),
-        width: mediaQuery.screenWidth(context),
+        height: PhoneSize.screenHeight(context),
+        width: PhoneSize.screenWidth(context),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -120,6 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     passworddata = value!;
                   },
                 ),
+                Gap(10.h),
+                OutlinedButton(onPressed: saveLogin, child: Text("save"))
               ],
             ),
           ),
