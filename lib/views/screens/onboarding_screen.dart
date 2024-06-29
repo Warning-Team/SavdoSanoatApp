@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:savdosanoatapp/models/user.dart';
+import 'package:savdosanoatapp/services/http_service/user_http_service.dart';
+import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
+import 'package:savdosanoatapp/utils/appconst.dart';
+import 'package:savdosanoatapp/views/screens/home_page.dart';
 import 'package:savdosanoatapp/views/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -11,10 +17,35 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  User? user;
   @override
   void initState() {
     super.initState();
     navigateToNextPage(context);
+  }
+
+  Future checkEnter() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    String? date = sharedPreferences.getString('date');
+    String? userId = sharedPreferences.getString('user');
+    print(date);
+    print(userId);
+    if (date != null && userId != null) {
+      user = await UserLoginService.getUser(userId);
+      DateTime dateTime = DateTime.parse(date);
+      Appconst.isEnter = DateTime.now().isAfter(dateTime);
+    }
+  }
+
+  void navigateToNextPage(BuildContext context) async {
+    await checkEnter();
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Appconst.isEnter ? HomePage(user: user!) : LoginScreen()),
+      );
+    });
   }
 
   @override
@@ -42,13 +73,4 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
-}
-
-void navigateToNextPage(BuildContext context) {
-  Future.delayed(const Duration(seconds: 2), () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) =>  LoginScreen()),
-    );
-  });
 }

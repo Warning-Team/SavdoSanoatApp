@@ -39,4 +39,11 @@ class UserLoginService {
       };
     }
   }
+
+  static Future<User> getUser(String userId) async {
+    final url = Uri.parse('https://savdosanoatapp-default-rtdb.firebaseio.com/users/$userId.json');
+    final response = await http.get(url);
+    final date = jsonDecode(response.body);
+    return User.fromJson(date, userId);
+  }
 }

@@ -32,7 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (checkdata['status'] == true) {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        
+        await sharedPreferences.setString('date', DateTime.now().toString());
+        await sharedPreferences.setString('user', checkdata['user'].userId);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
