@@ -7,6 +7,7 @@ import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,6 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<String, dynamic> checkdata = await UserLoginService.checkUser(logindata, passworddata);
 
       if (checkdata['status'] == true) {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
