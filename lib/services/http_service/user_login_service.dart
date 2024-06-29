@@ -11,13 +11,14 @@ class UserLoginService {
       final jsondata = jsonDecode(response.body);
       if (jsondata != null) {
         Map<String, dynamic> data = jsondata as Map<String, dynamic>;
+        String key = data.keys.toList().first;
         Map<String, dynamic> userdata = data.values.toList()[0] as Map<String, dynamic>;
 
         if (userdata['login'] == login && userdata['password'] == password) {
           return {
             'action': 'Hammasi joyida shaxsiy kabinetingizga hush kelibsiz',
             'status': true,
-            'user': userdata,
+            'user': User.fromJson(userdata, key),
           };
         } else {
           return {

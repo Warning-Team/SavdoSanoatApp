@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:savdosanoatapp/services/user_login_service.dart';
+import 'package:provider/provider.dart';
+import 'package:savdosanoatapp/controllers/user_controller.dart';
+import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/home_page.dart';
 
@@ -19,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordVisablety = true;
   String logindata = "";
   String passworddata = "";
-
   saveLogin() async {
     if (formkey.currentState!.validate()) {
       setState(() {
@@ -32,7 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) => HomePage(
+                user: checkdata['user'],
+              ),
             ));
       } else {
         showDialog(
