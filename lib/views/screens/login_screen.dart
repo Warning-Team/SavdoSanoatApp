@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:savdosanoatapp/services/user_login_service.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/home_page.dart';
 
@@ -13,19 +14,53 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLoading = false;
   final formkey = GlobalKey<FormState>();
   bool isPasswordVisablety = true;
   String logindata = "";
   String passworddata = "";
 
-  saveLogin() {
+  saveLogin() async {
     if (formkey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       formkey.currentState!.save();
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ));
+      Map<String, dynamic> checkdata = await UserLoginService.checkUser(logindata, passworddata);
+
+      if (checkdata['status'] == true) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ));
+      } else {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: Text(
+              checkdata['action'],
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Qayta urinish",
+                ),
+              )
+            ],
+          ),
+        );
+      }
+      isLoading = false;
+      setState(() {});
     }
   }
 
@@ -87,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                
                   obscureText: isPasswordVisablety,
                   decoration: InputDecoration(
                     labelText: 'Parol',
@@ -137,10 +171,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10.h),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.blue),
-                    child: Text(
-                      "Log in",
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            "Log in",
+                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+                          ),
                   ),
                 )
               ],

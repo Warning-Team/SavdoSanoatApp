@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
