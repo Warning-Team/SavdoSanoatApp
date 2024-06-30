@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
-import 'package:savdosanoatapp/views/screens/home_page.dart';
+import 'package:savdosanoatapp/views/screens/maneger_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,12 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
         await sharedPreferences.setString('date', DateTime.now().toString());
         await sharedPreferences.setString('user', checkdata['user'].userId);
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(
-                user: checkdata['user'],
-              ),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ManegerPage(
+              user: checkdata['user'],
+            ),
+          ),
+        );
       } else {
         showDialog(
           barrierDismissible: false,

@@ -5,7 +5,7 @@ import 'package:savdosanoatapp/models/user.dart';
 import 'package:savdosanoatapp/services/http_service/user_http_service.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/appconst.dart';
-import 'package:savdosanoatapp/views/screens/home_page.dart';
+import 'package:savdosanoatapp/views/screens/maneger_page.dart';
 import 'package:savdosanoatapp/views/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,8 +29,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     String? date = sharedPreferences.getString('date');
     String? userId = sharedPreferences.getString('user');
-    print(date);
-    print(userId);
     if (date != null && userId != null) {
       user = await UserLoginService.getUser(userId);
       DateTime dateTime = DateTime.parse(date);
@@ -41,9 +39,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void navigateToNextPage(BuildContext context) async {
     await checkEnter();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Appconst.isEnter ? HomePage(user: user!) : LoginScreen()),
+        MaterialPageRoute(builder: (context) => Appconst.isEnter ? ManegerPage(user: user!) : LoginScreen()),
       );
     });
   }
