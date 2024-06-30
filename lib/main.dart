@@ -25,21 +25,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      child: ChangeNotifierProvider(create: (context) {
-        return UserController();
-      }, builder: (context, child) {
-        return MaterialApp(
-          theme: ThemeData(
-            pageTransitionsTheme: const PageTransitionsTheme(
-              builders: {
-                TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-              },
+      child: ChangeNotifierProvider(
+        create: (context) {
+          return UserController();
+        },
+        builder: (context, child) {
+          return MaterialApp(
+            theme: ThemeData(
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                },
+              ),
             ),
-          ),
-          debugShowCheckedModeBanner: false,
-          home: OnboardingScreen(),
-        );
-      }),
+            debugShowCheckedModeBanner: false,
+            home: OnboardingScreen(),
+          );
+        },
+      ),
     );
   }
 }
