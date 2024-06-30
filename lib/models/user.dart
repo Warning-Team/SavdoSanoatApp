@@ -25,16 +25,16 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json, String key) {
     return User(
-      id: json['id'],
+      id: json['id'] ?? 0, // Providing a default value of 0
       userId: key,
-      login: json['login'],
-      password: json['password'],
-      name: json['name'],
-      surname: json['surname'],
-      phoneNumber: json['phoneNumber'],
-      workPlace: json['workPlace'],
-      role: json['role'],
-      imageUrl: json['imageUrl'],
+      login: json['login'] ?? '', // Providing default empty string
+      password: json['password'] ?? '', // Providing default empty string
+      name: json['name'] ?? '', // Providing default empty string
+      surname: json['surname'] ?? '', // Providing default empty string
+      phoneNumber: json['phoneNumber'] ?? '', // Providing default empty string
+      workPlace: json['workPlace'] ?? '', // Providing default empty string
+      role: json['role'] ?? '', // Providing default empty string
+      imageUrl: json['imageUrl'] ?? '', // Providing default empty string
     );
   }
 

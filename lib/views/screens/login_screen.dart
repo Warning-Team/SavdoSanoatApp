@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
+import 'package:savdosanoatapp/utils/inputvalidatsiya.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/maneger_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,27 +19,52 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
-  final formkey = GlobalKey<FormState>();
-  bool isPasswordVisablety = true;
-  String logindata = "";
-  String passworddata = "";
-  saveLogin() async {
-    if (formkey.currentState!.validate()) {
+  final formKey = GlobalKey<FormState>();
+  bool isPasswordVisible = true;
+  String loginData = "";
+  String passwordData = "";
+
+  Future<void> saveLogin() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+
+      if (!Validate.passportSerialNumber(loginData)) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: const Text(
+              "Login format xato. To'g'ri format: AB3501234",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Qayta urinish"),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
+
       setState(() {
         isLoading = true;
       });
-      formkey.currentState!.save();
-      Map<String, dynamic> checkdata = await UserLoginService.checkUser(logindata, passworddata);
 
-      if (checkdata['status'] == true) {
+      Map<String, dynamic> checkData = await UserLoginService.checkUser(loginData, passwordData);
+
+      if (checkData['status'] == true) {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('date', DateTime.now().toString());
-        await sharedPreferences.setString('user', checkdata['user'].userId);
+        await sharedPreferences.setString('user', checkData['user'].userId);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ManegerPage(
-              user: checkdata['user'],
+              user: checkData['user'],
             ),
           ),
         );
@@ -48,27 +74,24 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (ctx) => AlertDialog(
             content: Text(
-              checkdata['action'],
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              checkData['action'],
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
-                  "Qayta urinish",
-                ),
-              )
+                child: const Text("Qayta urinish"),
+              ),
             ],
           ),
         );
       }
-      isLoading = false;
-      setState(() {});
+
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -91,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: EdgeInsets.all(20.w),
           child: Form(
-            key: formkey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,22 +148,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                   onSaved: (value) {
-                    logindata = value!;
+                    loginData = value!;
                   },
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  obscureText: isPasswordVisablety,
+                  obscureText: isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Parol',
                     labelStyle: const TextStyle(color: Colors.white),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        isPasswordVisablety = !isPasswordVisablety;
-                        setState(() {});
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
                       },
                       icon: Icon(
-                        isPasswordVisablety ? CupertinoIcons.eye_slash : CupertinoIcons.eye_fill,
+                        isPasswordVisible ? CupertinoIcons.eye_slash : CupertinoIcons.eye_fill,
                         color: Colors.white,
                       ),
                     ),
@@ -169,16 +193,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                   onSaved: (value) {
-                    passworddata = value!;
+                    passwordData = value!;
                   },
                 ),
                 Gap(10.h),
                 InkWell(
-                  onTap: saveLogin,
+                  onTap: isLoading ? null : saveLogin,
                   child: Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10.h),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.blue),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.blue,
+                    ),
                     child: isLoading
                         ? const CircularProgressIndicator()
                         : Text(
@@ -186,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
                           ),
                   ),
-                )
+                ),
               ],
             ),
           ),

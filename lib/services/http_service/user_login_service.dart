@@ -6,7 +6,7 @@ class UserLoginService {
   static Future<Map<String, dynamic>> checkUser(String login, String password) async {
     final url = Uri.parse('https://savdosanoatapp-default-rtdb.firebaseio.com/users.json?orderBy="login"&equalTo="$login"');
     final response = await http.get(url);
-    
+
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
       
