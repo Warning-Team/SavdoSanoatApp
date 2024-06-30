@@ -1,0 +1,23 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "savdosanoatapp",
+                    "appId": "1:328587649727:android:f60b5161e006ac82e61c0a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "savdosanoatapp",
+                    "configurations": {
+                        "android": "1:328587649727:android:f60b5161e006ac82e61c0a",
+                        "ios": "1:328587649727:ios:cf9c1d000f7e8005e61c0a",
+                        "web": "1:328587649727:web:2fdc4875a66dcc04e61c0a"
+                    }
+                }
+            }
+        }
+    }
+}
