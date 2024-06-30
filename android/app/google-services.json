@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "328587649727",
+    "firebase_url": "https://savdosanoatapp-default-rtdb.firebaseio.com",
+    "project_id": "savdosanoatapp",
+    "storage_bucket": "savdosanoatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328587649727:android:f60b5161e006ac82e61c0a",
+        "android_client_info": {
+          "package_name": "com.example.savdosanoatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpeueSb6yG_0W4f0jiEKg-clbWmRuoy9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
