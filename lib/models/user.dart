@@ -34,7 +34,7 @@ class User {
       phoneNumber: json['phoneNumber'] ?? '', // Providing default empty string
       workPlace: json['workPlace'] ?? '', // Providing default empty string
       role: json['role'] ?? '', // Providing default empty string
-      imageUrl: json['imageUrl'] ?? '', // Providing default empty string
+      imageUrl: json['imageUri'] ?? '', // Providing default empty string
     );
   }
 
@@ -50,5 +50,16 @@ class User {
       'phoneNumber': user.phoneNumber,
       'imageUrl': user.imageUrl,
     };
+  }
+
+  void update(
+    String newName,
+    String newPhoneNumber,
+    String newSurname,
+  ) {
+    name = newName;
+    surname = newSurname;
+
+    phoneNumber = newPhoneNumber;
   }
 }

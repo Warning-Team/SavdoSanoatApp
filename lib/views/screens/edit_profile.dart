@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
+import 'package:savdosanoatapp/controllers/user_controller.dart';
 
-class EditProfile extends StatelessWidget {
-  EditProfile({super.key});
-  final nameController = TextEditingController(text: "Alex");
-  final lastNmaeController = TextEditingController(text: "Marshall");
-  final phoenController = TextEditingController(text: "940070707");
+// ignore: must_be_immutable
+class EditProfile extends StatefulWidget {
+  const EditProfile({
+    super.key,
+  });
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final nameController = TextEditingController();
+  late final UserController userController;
+
+  final lastNameController = TextEditingController();
+  final imageController = TextEditingController();
+  final phoenController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    userController = context.watch<UserController>();
+
+    nameController.text = userController.user!.name;
+    phoenController.text = userController.user!.phoneNumber;
+    lastNameController.text = userController.user!.surname;
+    if (userController.user!.imageUrl != "") {
+      imageController.text = userController.user!.imageUrl;
+    }
+
+    // print("object");
+    // print(userController.user!.imageUrl);
+    // print("object");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +55,59 @@ class EditProfile extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 100,
-                      backgroundImage: const NetworkImage(
-                        "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg",
-                      ),
+                      backgroundImage: userController.user!.imageUrl.isNotEmpty
+                          ? NetworkImage(userController.user!.imageUrl)
+                          : const AssetImage("assets/profile/default.png"),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return AlertDialog(
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize
+                                        .min, // To constrain the AlertDialog size
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("Enter image URL"),
+                                      TextField(
+                                        controller: imageController,
+                                        decoration: const InputDecoration(
+                                          hintText: "Enter URL",
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Back"),
+                                          ),
+                                          FilledButton(
+                                            onPressed: () {
+                                              userController.editImage(
+                                                  imageController.text);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Save"),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+
+                            userController.editImage("");
+                          },
                           icon: const Icon(
                             Icons.photo_camera,
                             size: 35,
@@ -53,16 +129,15 @@ class EditProfile extends StatelessWidget {
                 const Gap(20),
                 TextField(
                   textInputAction: TextInputAction.next,
-                  controller: lastNmaeController,
+                  controller: lastNameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Last Name",
                   ),
                 ),
                 const Gap(20),
-                IntlPhoneField(
+                TextField(
                   textInputAction: TextInputAction.done,
-                  initialCountryCode: "UZ",
                   controller: phoenController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -71,7 +146,14 @@ class EditProfile extends StatelessWidget {
                 ),
                 const Gap(36),
                 FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    userController.editUser(
+                      nameController.text,
+                      phoenController.text,
+                      lastNameController.text,
+                    );
+                    Navigator.of(context).pop();
+                  },
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
