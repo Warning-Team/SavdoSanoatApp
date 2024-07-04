@@ -1,11 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
+import 'package:savdosanoatapp/firebase_options.dart';
 import 'package:savdosanoatapp/views/screens/onboarding_screen.dart';
-import 'package:savdosanoatapp/views/screens/settings.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

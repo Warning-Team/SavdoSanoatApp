@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class EditProfile extends StatelessWidget {
+
   EditProfile({super.key});
   final nameController = TextEditingController(text: "Alex");
   final lastNmaeController = TextEditingController(text: "Marshall");
@@ -11,6 +12,7 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(),
       body: Center(
