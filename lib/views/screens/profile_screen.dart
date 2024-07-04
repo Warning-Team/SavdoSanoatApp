@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
+import 'package:savdosanoatapp/controllers/user_controller.dart';
+import 'package:savdosanoatapp/utils/extensions/phone_number.dart';
 import 'package:savdosanoatapp/views/screens/edit_profile.dart';
 
 // ignore: must_be_immutable
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({
+    super.key,
+  });
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final UserController userController;
+
   List options = [
     {
       "icon": Icons.settings,
@@ -21,10 +33,15 @@ class ProfileScreen extends StatelessWidget {
     },
   ];
   @override
+  void initState() {
+    super.initState();
+    userController = context.read<UserController>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Back"),
         centerTitle: false,
       ),
       body: Center(
@@ -32,19 +49,19 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 100,
-              backgroundImage: NetworkImage(
-                "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg",
-              ),
+              backgroundImage: userController.user!.imageUrl.isNotEmpty
+                  ? NetworkImage(userController.user!.imageUrl)
+                  : const AssetImage("assets/profile/default.png"),
             ),
             const Gap(20),
-            const Text(
-              "Alex Marshall",
-              style: TextStyle(fontSize: 27, fontWeight: FontWeight.w600),
+            Text(
+              "${userController.user!.name} ${userController.user!.surname}",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             ),
-            const Text(
-              "+998(94)007-07-07",
+            Text(
+              userController.user!.phoneNumber.phone_format(),
               style: TextStyle(fontSize: 18),
             ),
             Gap(36),
@@ -52,8 +69,11 @@ class ProfileScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (ctx) => EditProfile()),
+                  MaterialPageRoute(
+                    builder: (ctx) => EditProfile(),
+                  ),
                 );
+                setState(() {});
               },
               child: Padding(
                 padding:
@@ -81,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                       title: Text(
                         options[index]["title"],
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                            fontSize: 18, fontWeight: FontWeight.w400),
                       ),
                     ),
                     onTap: () {},

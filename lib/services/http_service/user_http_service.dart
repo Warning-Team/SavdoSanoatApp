@@ -1,3 +1,32 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 class UserHttpService {
-  editUser() {}
+  Future<void> editUser(
+      String newName, String newSurname, String newNumber) async {
+    Uri url = Uri.parse(
+        "https://savdosanoatapp-default-rtdb.firebaseio.com/users/-O0J-mk8ZKsXnILtHDXS.json");
+    Map<String, dynamic> userData = {
+      "name": newName,
+      "surname": newSurname,
+      "phoneNumber": newNumber,
+    };
+    await http.patch(
+      url,
+      body: jsonEncode(userData),
+    );
+  }
+
+  Future<void> editPhoto(String imageUrl) async {
+    Uri url = Uri.parse(
+        "https://savdosanoatapp-default-rtdb.firebaseio.com/users/-O0J-mk8ZKsXnILtHDXS.json");
+    Map<String, dynamic> userData = {
+      "imageUri": imageUrl,
+    };
+    await http.patch(
+      url,
+      body: jsonEncode(userData),
+    );
+  }
 }
