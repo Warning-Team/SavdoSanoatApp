@@ -16,8 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late final UserController userController;
-
   List options = [
     {
       "icon": Icons.settings,
@@ -32,14 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       "title": "About us",
     },
   ];
-  @override
-  void initState() {
-    super.initState();
-    userController = context.read<UserController>();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final UserController userController = context.watch<UserController>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -51,9 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             CircleAvatar(
               radius: 100,
-              backgroundImage: userController.user!.imageUrl.isNotEmpty
-                  ? NetworkImage(userController.user!.imageUrl)
-                  : const AssetImage("assets/profile/default.png"),
+              backgroundImage: userController.user!.imageUrl.isNotEmpty ? NetworkImage(userController.user!.imageUrl) : const AssetImage("assets/profile/default.png"),
             ),
             const Gap(20),
             Text(
@@ -76,8 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 setState(() {});
               },
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 130.0.w, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 130.0.w, vertical: 15),
                 child: const Text(
                   "Edit",
                   style: TextStyle(fontSize: 18),
@@ -100,8 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       leading: Icon(options[index]["icon"], size: 28),
                       title: Text(
                         options[index]["title"],
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w400),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                       ),
                     ),
                     onTap: () {},

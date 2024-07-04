@@ -10,18 +10,22 @@ class UserController extends ChangeNotifier {
     String newName,
     String newPhoneNumber,
     String newSurname,
+    String id,
   ) async {
-    notifyListeners();
-
-    return userHttpService.editUser(
+    user!.name = newName;
+    user!.surname = newSurname;
+    user!.phoneNumber = newPhoneNumber;
+    await userHttpService.editUser(
       newName,
       newSurname,
       newPhoneNumber,
+      id,
     );
+    notifyListeners();
   }
 
   Future<void> editImage(String imageUri) async {
+    await userHttpService.editPhoto(imageUri);
     notifyListeners();
-    return userHttpService.editPhoto(imageUri);
   }
 }

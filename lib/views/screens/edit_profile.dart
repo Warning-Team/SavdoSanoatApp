@@ -25,7 +25,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    userController = context.watch<UserController>();
+    userController = context.read<UserController>();
 
     nameController.text = userController.user!.name;
     phoenController.text = userController.user!.phoneNumber;
@@ -41,7 +41,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -56,9 +55,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     CircleAvatar(
                       radius: 100,
-                      backgroundImage: userController.user!.imageUrl.isNotEmpty
-                          ? NetworkImage(userController.user!.imageUrl)
-                          : const AssetImage("assets/profile/default.png"),
+                      backgroundImage: userController.user!.imageUrl.isNotEmpty ? NetworkImage(userController.user!.imageUrl) : const AssetImage("assets/profile/default.png"),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: IconButton(
@@ -68,10 +65,8 @@ class _EditProfileState extends State<EditProfile> {
                               builder: (ctx) {
                                 return AlertDialog(
                                   content: Column(
-                                    mainAxisSize: MainAxisSize
-                                        .min, // To constrain the AlertDialog size
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min, // To constrain the AlertDialog size
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       const Text("Enter image URL"),
                                       TextField(
@@ -82,8 +77,7 @@ class _EditProfileState extends State<EditProfile> {
                                       ),
                                       const SizedBox(height: 20),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           TextButton(
                                             onPressed: () {
@@ -93,8 +87,7 @@ class _EditProfileState extends State<EditProfile> {
                                           ),
                                           FilledButton(
                                             onPressed: () {
-                                              userController.editImage(
-                                                  imageController.text);
+                                              userController.editImage(imageController.text);
                                               Navigator.pop(context);
                                             },
                                             child: const Text("Save"),
@@ -152,12 +145,12 @@ class _EditProfileState extends State<EditProfile> {
                       nameController.text,
                       phoenController.text,
                       lastNameController.text,
+                      userController.user!.userId,
                     );
                     Navigator.of(context).pop();
                   },
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
                     child: const Text(
                       "save",
                       style: TextStyle(fontSize: 18),
