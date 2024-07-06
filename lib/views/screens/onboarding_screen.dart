@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:savdosanoatapp/models/user.dart';
-import 'package:savdosanoatapp/services/http_service/user_http_service.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/appconst.dart';
 import 'package:savdosanoatapp/views/screens/maneger_page.dart';

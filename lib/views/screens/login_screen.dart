@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:provider/provider.dart';
-import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/inputvalidatsiya.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
