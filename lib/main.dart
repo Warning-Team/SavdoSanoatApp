@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:savdosanoatapp/controllers/request_controller.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/firebase_options.dart';
 import 'package:savdosanoatapp/views/screens/onboarding_screen.dart';
@@ -24,10 +25,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      child: ChangeNotifierProvider(
-        create: (context) {
-          return UserController();
-        },
+      child: MultiProvider(
+       providers: [
+        ChangeNotifierProvider(create: (_) => UserController()),
+        ChangeNotifierProvider(create: (_) => RequestController()),
+
+
+       ],
         builder: (context, child) {
           return MaterialApp(
             theme: ThemeData(

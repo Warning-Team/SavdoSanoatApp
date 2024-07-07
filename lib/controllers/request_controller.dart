@@ -2,11 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:savdosanoatapp/utils/extensions/datetime_reformat.dart';
 import 'package:savdosanoatapp/models/request.dart';
 
-class AddRequestController {
+class RequestController extends ChangeNotifier {
+  final firestore = FirebaseFirestore.instance.collection('requests');
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getReusets() {
+    return firestore.orderBy('date', descending: true).snapshots();
+  }
+
   checkClient(String stir) async {
     final url = Uri.parse('https://savdosanoatapp-default-rtdb.firebaseio.com/clients.json?orderBy="stir"&equalTo=$stir');
     final response = await http.get(url);
@@ -42,7 +49,11 @@ class AddRequestController {
   }
 
   Future<void> saveRequestToFirestore(Request request) async {
-    final firestore = FirebaseFirestore.instance;
-    await firestore.collection('requests').add(request.toMap());
+    await firestore.add(request.toMap());
+  }
+
+  static getClientName(int cId) async {
+    final url = Uri.parse('https://savdosanoatapp-default-rtdb.firebaseio.com/clients.json?orderBy="id"&equalTo=$cId');
+    return "";
   }
 }

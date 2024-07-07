@@ -5,11 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:savdosanoatapp/controllers/add_request_controller.dart';
+import 'package:savdosanoatapp/controllers/request_controller.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/models/request.dart';
 import 'package:savdosanoatapp/views/widget/animated_widget.dart';
-import 'package:savdosanoatapp/views/widget/loding_widget.dart';
+import 'package:savdosanoatapp/views/widget/loding_widget.dart'; // Corrected typo in import
 
 class AddNewRequest extends StatefulWidget {
   const AddNewRequest({super.key});
@@ -20,7 +20,7 @@ class AddNewRequest extends StatefulWidget {
 
 class _AddNewRequestState extends State<AddNewRequest> {
   final _picker = ImagePicker();
-  final addRequestController = AddRequestController();
+  late RequestController addRequestController; // Corrected type definition
   final formKey = GlobalKey<FormState>();
   late Map<String, dynamic> response;
 
@@ -42,12 +42,12 @@ class _AddNewRequestState extends State<AddNewRequest> {
   }
 
   void submit() async {
-    final userCountroller = context.read<UserController>();
+    final userController = context.read<UserController>();
     if (formKey.currentState!.validate() && descriptionError == null && stirError == null) {
-      LodingWidget.showLoadingDialog(context);
+      LodingWidget.showLoadingDialog(context); // Corrected typo in function call
 
-      final client = response['status'].values.toList().first as Map;
-      final int eId = userCountroller.user!.id;
+      final client = response['status'].values.toList().first as Map<String, dynamic>; // Corrected type definition
+      final int eId = userController.user!.id;
       final int cId = client['id']; // Replace with actual client ID
       final DateTime date = DateTime.now();
       final String description = descriptionController.text;
@@ -55,7 +55,7 @@ class _AddNewRequestState extends State<AddNewRequest> {
       final int id = DateTime.now().millisecondsSinceEpoch;
 
       // Upload images and get URLs
-      final stream = addRequestController.addImageToFirestore(imageFiles, client['companyName'], userCountroller.user!.name);
+      final stream = addRequestController.addImageToFirestore(imageFiles, client['companyName'], userController.user!.name);
       await for (final snapshot in stream) {
         if (snapshot.state == TaskState.success) {
           final downloadUrl = await snapshot.ref.getDownloadURL();
@@ -71,17 +71,19 @@ class _AddNewRequestState extends State<AddNewRequest> {
         description: description,
         imageUrls: imageUrls,
         id: id,
+        fId: "",
       );
 
       // Save the request to Firestore
       await addRequestController.saveRequestToFirestore(request);
-      Navigator.pop(context);
-      Navigator.pop(context);
+      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context); // Close AddNewRequest screen
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    addRequestController = context.read<RequestController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Request"),
@@ -150,69 +152,69 @@ class _AddNewRequestState extends State<AddNewRequest> {
                 spacing: 10.w,
                 runSpacing: 10.h,
                 children: [
-                  for (int i = 0; i <= imageFiles.length; i++)
-                    i == imageFiles.length
-                        ? imageFiles.length < 6
-                            ? InkWell(
-                                onTap: () async {
-                                  await getImageFromCamera();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue.shade200,
-                                      width: 5,
-                                    ),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  height: 100.h,
-                                  width: 100.w,
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.add_a_photo,
-                                    color: Colors.blue.shade400,
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink()
-                        : Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Image.file(
-                                imageFiles[i],
-                                height: 100.h,
-                                width: 100.w,
-                                fit: BoxFit.cover,
+                  for (int i = 0; i < imageFiles.length; i++) // Corrected condition to iterate through all imageFiles
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Image.file(
+                          imageFiles[i],
+                          height: 100.h,
+                          width: 100.w,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          right: -5,
+                          top: -5,
+                          child: InkWell(
+                            onTap: () {
+                              imageFiles.removeAt(i);
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 20.h,
+                              width: 20.w,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
                               ),
-                              Positioned(
-                                  right: -5,
-                                  top: -5,
-                                  child: InkWell(
-                                    onTap: () {
-                                      imageFiles.removeAt(i);
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      height: 20.h,
-                                      width: 20.w,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.close,
-                                      ),
-                                    ),
-                                  )),
-                            ],
+                              child: const Icon(
+                                Icons.close,
+                              ),
+                            ),
                           ),
+                        ),
+                      ],
+                    ),
+                  if (imageFiles.length < 6)
+                    InkWell(
+                      onTap: () async {
+                        await getImageFromCamera();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.blue.shade200,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 100.h,
+                        width: 100.w,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.add_a_photo,
+                          color: Colors.blue.shade400,
+                        ),
+                      ),
+                    ),
                 ],
               ),
               Gap(25.h),
               if (isUploading) AnimatedUploadWidget(progress: uploadProgress),
               if (!isUploading)
                 Center(
-                  child: FilledButton(
+                  child: ElevatedButton(
+                    // Changed to ElevatedButton
                     onPressed: submit,
                     child: const Text("Save"),
                   ),

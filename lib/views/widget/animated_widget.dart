@@ -12,6 +12,7 @@ class AnimatedUploadWidget extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CircularProgressIndicator(
+            color: Colors.blue,
             value: progress,
             strokeWidth: 8.0,
           ),

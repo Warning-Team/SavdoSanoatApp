@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Request {
   final int eId;
   final int cId;
@@ -5,6 +7,7 @@ class Request {
   final String description;
   final List<String> imageUrls;
   final int id;
+  final String fId;
 
   Request({
     required this.eId,
@@ -13,8 +16,10 @@ class Request {
     required this.description,
     required this.imageUrls,
     required this.id,
+    required this.fId,
   });
 
+  // Convert Request object to a Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'eId': eId,
@@ -24,5 +29,18 @@ class Request {
       'imageUrls': imageUrls,
       'id': id,
     };
+  }
+
+  // Factory method to create a Request object from a QueryDocumentSnapshot
+  factory Request.fromQuery(QueryDocumentSnapshot query) {
+    return Request(
+      fId: query.id,
+      eId: query['eId'],
+      cId: query['cId'],
+      date: DateTime.parse(query['date']),
+      description: query['description'],
+      imageUrls: List<String>.from(query['imageUrls']),
+      id: query['id'],
+    );
   }
 }
