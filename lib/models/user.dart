@@ -34,7 +34,7 @@ class User {
       phoneNumber: json['phoneNumber'] ?? '', // Providing default empty string
       workPlace: json['workPlace'] ?? '', // Providing default empty string
       role: json['role'] ?? '', // Providing default empty string
-      imageUrl: json['imageUri'] ?? '', // Providing default empty string
+      imageUrl: json['imageUrl'] ?? '', // Providing default empty string
     );
   }
 
