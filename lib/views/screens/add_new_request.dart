@@ -89,137 +89,139 @@ class _AddNewRequestState extends State<AddNewRequest> {
         title: const Text("Add Request"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: const TextInputType.numberWithOptions(),
-                controller: stirController,
-                decoration: InputDecoration(
-                  errorText: stirError,
-                  border: const OutlineInputBorder(),
-                  labelText: "STIR",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "STIR kiritilishi shart";
-                  } else if (int.tryParse(value) == null) {
-                    return "STIR noto'g'ri kiritilgan";
-                  }
-                  return null;
-                },
-                onChanged: (value) async {
-                  int? stir = int.tryParse(value);
-                  if (stir != null) {
-                    response = await addRequestController.checkClient(value);
-                    if (response['isFind'] == true) {
-                      stirError = null;
-                    } else {
-                      stirError = "STIR topilmadi";
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  textInputAction: TextInputAction.next,
+                  keyboardType: const TextInputType.numberWithOptions(),
+                  controller: stirController,
+                  decoration: InputDecoration(
+                    errorText: stirError,
+                    border: const OutlineInputBorder(),
+                    labelText: "STIR",
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "STIR kiritilishi shart";
+                    } else if (int.tryParse(value) == null) {
+                      return "STIR noto'g'ri kiritilgan";
                     }
-                  } else {
-                    stirError = "STIR xato kiritildi";
-                  }
-                  setState(() {});
-                },
-              ),
-              Gap(25.h),
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                controller: descriptionController,
-                decoration: InputDecoration(
-                  errorText: descriptionError,
-                  border: const OutlineInputBorder(),
-                  hintText: "Description",
+                    return null;
+                  },
+                  onChanged: (value) async {
+                    int? stir = int.tryParse(value);
+                    if (stir != null) {
+                      response = await addRequestController.checkClient(value);
+                      if (response['isFind'] == true) {
+                        stirError = null;
+                      } else {
+                        stirError = "STIR topilmadi";
+                      }
+                    } else {
+                      stirError = "STIR xato kiritildi";
+                    }
+                    setState(() {});
+                  },
                 ),
-                minLines: 3,
-                maxLines: 5,
-                maxLength: 300,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Description kiritilishi shart";
-                  }
-                  return null;
-                },
-              ),
-              Gap(25.h),
-              Wrap(
-                spacing: 10.w,
-                runSpacing: 10.h,
-                children: [
-                  for (int i = 0; i < imageFiles.length; i++) // Corrected condition to iterate through all imageFiles
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Image.file(
-                          imageFiles[i],
-                          height: 100.h,
-                          width: 100.w,
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          right: -5,
-                          top: -5,
-                          child: InkWell(
-                            onTap: () {
-                              imageFiles.removeAt(i);
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 20.h,
-                              width: 20.w,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.close,
+                Gap(25.h),
+                TextFormField(
+                  textInputAction: TextInputAction.next,
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    errorText: descriptionError,
+                    border: const OutlineInputBorder(),
+                    hintText: "Description",
+                  ),
+                  minLines: 3,
+                  maxLines: 5,
+                  maxLength: 300,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Description kiritilishi shart";
+                    }
+                    return null;
+                  },
+                ),
+                Gap(25.h),
+                Wrap(
+                  spacing: 10.w,
+                  runSpacing: 10.h,
+                  children: [
+                    for (int i = 0; i < imageFiles.length; i++) // Corrected condition to iterate through all imageFiles
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Image.file(
+                            imageFiles[i],
+                            height: 100.h,
+                            width: 100.w,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            right: -5,
+                            top: -5,
+                            child: InkWell(
+                              onTap: () {
+                                imageFiles.removeAt(i);
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 20.h,
+                                width: 20.w,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  if (imageFiles.length < 6)
-                    InkWell(
-                      onTap: () async {
-                        await getImageFromCamera();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.blue.shade200,
-                            width: 5,
+                        ],
+                      ),
+                    if (imageFiles.length < 6)
+                      InkWell(
+                        onTap: () async {
+                          await getImageFromCamera();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.blue.shade200,
+                              width: 5,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        height: 100.h,
-                        width: 100.w,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.add_a_photo,
-                          color: Colors.blue.shade400,
+                          height: 100.h,
+                          width: 100.w,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.add_a_photo,
+                            color: Colors.blue.shade400,
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-              Gap(25.h),
-              if (isUploading) AnimatedUploadWidget(progress: uploadProgress),
-              if (!isUploading)
-                Center(
-                  child: ElevatedButton(
-                    // Changed to ElevatedButton
-                    onPressed: submit,
-                    child: const Text("Save"),
-                  ),
+                  ],
                 ),
-            ],
+                Gap(25.h),
+                if (isUploading) AnimatedUploadWidget(progress: uploadProgress),
+                if (!isUploading)
+                  Center(
+                    child: ElevatedButton(
+                      // Changed to ElevatedButton
+                      onPressed: submit,
+                      child: const Text("Save"),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
