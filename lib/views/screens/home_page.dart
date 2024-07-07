@@ -9,6 +9,7 @@ import 'package:savdosanoatapp/models/user.dart';
 import 'package:savdosanoatapp/utils/extensions/datetime_reformat.dart';
 import 'package:savdosanoatapp/views/screens/add_new_request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:savdosanoatapp/views/screens/request_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,7 +42,8 @@ class _HomePageState extends State<HomePage> {
                         height: 44.w,
                       )
                     : FadeInImage(
-                        placeholder: const AssetImage("assets/profile/default.png"),
+                        placeholder:
+                            const AssetImage("assets/profile/default.png"),
                         image: NetworkImage(user.imageUrl),
                         fit: BoxFit.cover,
                         width: 44.w,
@@ -85,11 +87,13 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         user.workPlace,
-                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "ID: ${user.id}",
-                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -110,7 +114,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: requestController.getReusets(),
+                stream: requestController.getRequests(user.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -132,12 +136,21 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(5.w),
                     itemCount: requests.length,
                     itemBuilder: (context, index) {
-                      final data = Request.fromQuery(requests[index]);
+                      final request = Request.fromQuery(requests[index]);
                       return Card(
                         child: ListTile(
-                          onTap: (){},
-                          title: Text(data.cId.toString()),
-                          subtitle: Text(data.date.toFormattedDate()),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) => RequestScreen(
+                                  request: request,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(request.cId.toString()),
+                          subtitle: Text(request.date.toFormattedDate()),
                         ),
                       );
                     },

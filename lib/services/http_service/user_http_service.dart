@@ -18,6 +18,8 @@ class UserHttpService {
     );
   }
 
+  
+
   Future<void> editPhoto(Map data,String id) async {
     Uri url = Uri.parse(
         "https://savdosanoatapp-default-rtdb.firebaseio.com/users/$id.json");
