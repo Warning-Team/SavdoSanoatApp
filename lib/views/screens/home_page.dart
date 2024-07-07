@@ -8,6 +8,7 @@ import 'package:savdosanoatapp/models/request.dart';
 import 'package:savdosanoatapp/models/user.dart';
 import 'package:savdosanoatapp/utils/extensions/datetime_reformat.dart';
 import 'package:savdosanoatapp/views/screens/add_new_request.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,8 +31,23 @@ class _HomePageState extends State<HomePage> {
           children: [
             Gap(10.w),
             CircleAvatar(
-              backgroundImage: user.imageUrl.isEmpty ? const AssetImage("assets/profile/default.png") : FadeInImage(placeholder: AssetImage("assets/profile/default.png"), image: NetworkImage(user.imageUrl)),
-              maxRadius: 22.w,
+              radius: 22.w,
+              child: ClipOval(
+                child: user.imageUrl.isEmpty
+                    ? Image.asset(
+                        "assets/profile/default.png",
+                        fit: BoxFit.cover,
+                        width: 44.w,
+                        height: 44.w,
+                      )
+                    : FadeInImage(
+                        placeholder: const AssetImage("assets/profile/default.png"),
+                        image: NetworkImage(user.imageUrl),
+                        fit: BoxFit.cover,
+                        width: 44.w,
+                        height: 44.w,
+                      ),
+              ),
             ),
           ],
         ),
