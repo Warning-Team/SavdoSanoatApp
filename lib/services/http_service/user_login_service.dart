@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:savdosanoatapp/models/user.dart';
+import 'package:savdosanoatapp/services/AuthUserFairbases.dart';
 
 class UserLoginService {
   static Future<Map<String, dynamic>> checkUser(String login, String password) async {
@@ -9,13 +10,15 @@ class UserLoginService {
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      
+
       if (jsonData != null && jsonData.isNotEmpty) {
         Map<String, dynamic> data = jsonData as Map<String, dynamic>;
         String key = data.keys.first;
         Map<String, dynamic> userData = data[key] as Map<String, dynamic>;
 
         if (userData['login'] == login && userData['password'] == password) {
+          final user = User.fromJson(userData, key);
+          await Authuserfairbases.login(email: "${user.name}${user.surname}@gmail.com", password: user.password);
           return {
             'action': 'Hammasi joyida shaxsiy kabinetingizga hush kelibsiz',
             'status': true,
