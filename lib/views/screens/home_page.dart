@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddNewRequest(),
+              builder: (context) => const AddNewRequest(),
             ),
           );
         },
@@ -49,9 +49,15 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(15.0).w,
         child: Column(
           children: [
-            Text(
-              user.workPlace,
-              style: TextStyle(fontSize: 18.w),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.blueGrey,
+              ),
+              child: Text(
+                user.workPlace,
+                style: TextStyle(fontSize: 18.w),
+              ),
             )
           ],
         ),
