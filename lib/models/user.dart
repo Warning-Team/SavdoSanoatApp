@@ -23,7 +23,7 @@ class User {
     required this.imageUrl,
   });
 
-  factory User.fromJson(Map<String, dynamic> json, String key) {
+  factory User.fromJson(Map<String, dynamic> json, String key) {  
     return User(
       id: json['id'] ?? 0, // Providing a default value of 0
       userId: key,

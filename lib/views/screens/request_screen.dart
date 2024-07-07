@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:savdosanoatapp/controllers/client_controller.dart';
 import 'package:savdosanoatapp/models/request.dart';
 
 // ignore: must_be_immutable
@@ -11,6 +12,7 @@ class RequestScreen extends StatefulWidget {
 }
 
 class _RequestScreenState extends State<RequestScreen> {
+  final clientController = ClientController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,37 +29,37 @@ class _RequestScreenState extends State<RequestScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    const Card(
+                     Card(
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text(
+                            title: const Text(
                               "company name",
                               style: TextStyle(fontSize: 17),
                             ),
                             trailing: Text(
-                              "Azamat MJR",
-                              style: TextStyle(fontSize: 18),
+                              clientController.data.companyName,
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ),
                           ListTile(
-                            title: Text(
+                            title: const Text(
                               "strir",
                               style: TextStyle(fontSize: 17),
                             ),
                             trailing: Text(
-                              "12345678912345",
-                              style: TextStyle(fontSize: 18),
+                              clientController.data.stir.toString(),
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ),
                           ListTile(
-                            title: Text(
+                            title: const Text(
                               "phone number",
                               style: TextStyle(fontSize: 17),
                             ),
                             trailing: Text(
-                              "+998911234567",
-                              style: TextStyle(fontSize: 18),
+                              clientController.data.phoneNumber,
+                              style: const TextStyle(fontSize: 18),
                             ),
                           )
                         ],
