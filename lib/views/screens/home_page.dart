@@ -135,6 +135,7 @@ class _HomePageState extends State<HomePage> {
                       final data = Request.fromQuery(requests[index]);
                       return Card(
                         child: ListTile(
+                          onTap: (){},
                           title: Text(data.cId.toString()),
                           subtitle: Text(data.date.toFormattedDate()),
                         ),
