@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AnimatedUploadWidget extends StatelessWidget {
   final double progress;
 
-  const AnimatedUploadWidget({Key? key, required this.progress}) : super(key: key);
+  const AnimatedUploadWidget({super.key, required this.progress});
 
   @override
   Widget build(BuildContext context) {

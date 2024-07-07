@@ -20,30 +20,22 @@ class _PhotoGalaryCameraState extends State<PhotoGalaryCamera> {
 
   @override
   void initState() {
-    // TODO: implement initState
-     userController = context.read<UserController>();
+    userController = context.read<UserController>();
     super.initState();
   }
 
   void _uploadImage() async {
     if (widget.imageFile != null && userController.user != null) {
       ProgresIndicatior.showProgressDialog(context);
-      print(1);
-      await userController.editImage(
-          widget.imageFile!, userController.user!.userId);
-      print(2);
+
+      await userController.editImage(widget.imageFile!, userController.user!.userId);
+
       if (context.mounted) {
-        print(3);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context); // Close the progress dialog
-        Navigator.pop(context); // Close the image picker dialog
+        // ignore: use_build_context_synchronously
       }
-      print(4);
-    } else {
-      print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-      print(widget.imageFile);
-      print(userController.user!.id);
-      print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-    }
+    } 
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:savdosanoatapp/models/user.dart';
-import 'package:savdosanoatapp/services/AuthUserFairbases.dart';
+import 'package:savdosanoatapp/services/auth_user_fairbases.dart';
 
 class UserLoginService {
   static Future<Map<String, dynamic>> checkUser(String login, String password) async {

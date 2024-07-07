@@ -14,7 +14,6 @@ class FirebaseStorageService {
     final uploadTask = imageReference.putFile(file);
     uploadTask.snapshotEvents.listen(
       (event) {
-        print(event.state);
       },
     );
     String imageUrl = "";

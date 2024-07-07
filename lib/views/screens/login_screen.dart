@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await sharedPreferences.setString('date', DateTime.now().toString());
         await sharedPreferences.setString('user', checkData['user'].userId);
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (context) => ManegerPage(
@@ -69,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         showDialog(
           barrierDismissible: false,
+          // ignore: use_build_context_synchronously
           context: context,
           builder: (ctx) => AlertDialog(
             content: Text(

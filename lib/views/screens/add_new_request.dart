@@ -76,7 +76,9 @@ class _AddNewRequestState extends State<AddNewRequest> {
 
       // Save the request to Firestore
       await addRequestController.saveRequestToFirestore(request);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // Close loading dialog
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // Close AddNewRequest screen
     }
   }

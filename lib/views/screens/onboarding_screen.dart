@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as ath;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -31,6 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (date != null && userId != null) {
       user = await UserLoginService.getUser(userId);
       DateTime dateTime = DateTime.parse(date);
+      print(dateTime);
       Appconst.isEnter = DateTime.now().isAfter(dateTime);
     }
   }
@@ -40,7 +42,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Appconst.isEnter ? ManegerPage(user: user!) : LoginScreen()),
+        MaterialPageRoute(builder: (context) => StreamBuilder(
+            stream: ath.FirebaseAuth.instance.userChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return const LoginScreen();
+              } else {
+                return ManegerPage(user: user!,);
+              }
+            },
+          ),),
       );
     });
   }
