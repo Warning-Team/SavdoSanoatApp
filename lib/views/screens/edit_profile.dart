@@ -99,9 +99,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     CircleAvatar(
                       radius: 100,
-                      backgroundImage: userController.user != null
-                          ? NetworkImage(userController.user!.imageUrl)
-                          : const AssetImage("assets/profile/default.png"),
+                      backgroundImage: userController.user!.imageUrl.isNotEmpty ? NetworkImage(userController.user!.imageUrl) : const AssetImage("assets/profile/default.png"),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: IconButton(
@@ -156,8 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                     Navigator.of(context).pop();
                   },
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
                     child: const Text(
                       "Save",
                       style: TextStyle(fontSize: 18),

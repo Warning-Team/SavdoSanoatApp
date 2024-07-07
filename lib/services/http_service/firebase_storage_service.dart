@@ -14,18 +14,13 @@ class FirebaseStorageService {
     final uploadTask = imageReference.putFile(file);
     uploadTask.snapshotEvents.listen(
       (event) {
-        print("-----------------------------------------------");
-        print("-----------------------------------------------");
-        print("-----------------------------------------------");
         print(event.state);
-        print("-----------------------------------------------");
-        print("-----------------------------------------------");
       },
     );
     String imageUrl = "";
     await uploadTask.whenComplete(
       () async {
-        imageUrl = await imageReference.getDownloadURL();
+         imageUrl = await imageReference.getDownloadURL();
       },
     );
     return imageUrl;

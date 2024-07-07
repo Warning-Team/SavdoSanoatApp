@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Gap(10.w),
             CircleAvatar(
-              backgroundImage: user.imageUrl.isEmpty ? const AssetImage("assets/profile/default.png") : NetworkImage(userController.user!.imageUrl) as ImageProvider,
+              backgroundImage: user.imageUrl.isEmpty ? const AssetImage("assets/profile/default.png") : FadeInImage(placeholder: AssetImage("assets/profile/default.png"), image: NetworkImage(user.imageUrl)),
               maxRadius: 22.w,
             ),
           ],
