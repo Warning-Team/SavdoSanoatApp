@@ -1,26 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
+import 'package:savdosanoatapp/views/widgets/photo_galary_camera.dart';
 
-// ignore: must_be_immutable
 class EditProfile extends StatefulWidget {
-  const EditProfile({
-    super.key,
-  });
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final nameController = TextEditingController();
+  File? imageFile;
   late final UserController userController;
 
+  final nameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final imageController = TextEditingController();
-  final phoenController = TextEditingController();
+  final phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -28,15 +29,58 @@ class _EditProfileState extends State<EditProfile> {
     userController = context.read<UserController>();
 
     nameController.text = userController.user!.name;
-    phoenController.text = userController.user!.phoneNumber;
+    phoneController.text = userController.user!.phoneNumber;
     lastNameController.text = userController.user!.surname;
-    if (userController.user!.imageUrl != "") {
-      imageController.text = userController.user!.imageUrl;
-    }
+  }
 
-    // print("object");
-    // print(userController.user!.imageUrl);
-    // print("object");
+  void _uploadImage(ImageSource imageSource) async {
+    final imagePicker = ImagePicker();
+    final XFile? pickedImage = await imagePicker.pickImage(source: imageSource);
+    if (pickedImage != null) {
+      setState(() {
+        imageFile = File(pickedImage.path);
+      });
+      _showImageDialog();
+    }
+  }
+
+  void _showImageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PhotoGalaryCamera(imageFile: imageFile);
+      },
+    );
+  }
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _uploadImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _uploadImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -55,52 +99,14 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     CircleAvatar(
                       radius: 100,
-                      backgroundImage: userController.user!.imageUrl.isNotEmpty ? NetworkImage(userController.user!.imageUrl) : const AssetImage("assets/profile/default.png"),
+                      backgroundImage: userController.user != null
+                          ? NetworkImage(userController.user!.imageUrl)
+                          : const AssetImage("assets/profile/default.png"),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: IconButton(
                           onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (ctx) {
-                                return AlertDialog(
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min, // To constrain the AlertDialog size
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text("Enter image URL"),
-                                      TextField(
-                                        controller: imageController,
-                                        decoration: const InputDecoration(
-                                          hintText: "Enter URL",
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("Back"),
-                                          ),
-                                          FilledButton(
-                                            onPressed: () {
-                                              userController.editImage(imageController.text);
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("Save"),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-
-                            userController.editImage("");
+                            _showPicker(context);
                           },
                           icon: const Icon(
                             Icons.photo_camera,
@@ -132,7 +138,7 @@ class _EditProfileState extends State<EditProfile> {
                 const Gap(20),
                 TextField(
                   textInputAction: TextInputAction.done,
-                  controller: phoenController,
+                  controller: phoneController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Phone Number",
@@ -143,16 +149,17 @@ class _EditProfileState extends State<EditProfile> {
                   onPressed: () {
                     userController.editUser(
                       nameController.text,
-                      phoenController.text,
+                      phoneController.text,
                       lastNameController.text,
                       userController.user!.userId,
                     );
                     Navigator.of(context).pop();
                   },
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
                     child: const Text(
-                      "save",
+                      "Save",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

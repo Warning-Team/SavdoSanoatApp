@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/firebase_options.dart';
+import 'package:savdosanoatapp/views/screens/edit_profile.dart';
 import 'package:savdosanoatapp/views/screens/onboarding_screen.dart';
+import 'package:savdosanoatapp/views/screens/profile_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
