@@ -5,12 +5,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 class FirebaseStorageService {
   final _storage = FirebaseStorage.instance;
 
-  Future<String> uploadFile(File file) async {
+  Future<String> uploadFile(File file,String userId) async {
     final imageReference = _storage
         .ref()
         .child("users")
         .child("Images")
-        .child("${DateTime.now()}.jpg");
+        .child("${userId}.jpg");
     final uploadTask = imageReference.putFile(file);
     uploadTask.snapshotEvents.listen(
       (event) {

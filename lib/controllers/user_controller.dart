@@ -32,7 +32,7 @@ class UserController extends ChangeNotifier {
     File file,
     String id,
   ) async {
-    final imageUrl = await _firebaseStorageService.uploadFile(file);
+    final imageUrl = await _firebaseStorageService.uploadFile(file, id);
     user!.imageUrl = imageUrl;
 
     Map<String, dynamic> userData = {
