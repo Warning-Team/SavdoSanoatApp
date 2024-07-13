@@ -9,10 +9,12 @@ class User {
   String workPlace;
   String role;
   String imageUrl;
+  String uId;
 
   User({
     required this.id,
     required this.userId,
+    required this.uId,
     required this.login,
     required this.password,
     required this.name,
@@ -35,6 +37,7 @@ class User {
       workPlace: json['workPlace'] ?? '', // Providing default empty string
       role: json['role'] ?? '', // Providing default empty string
       imageUrl: json['imageUrl'] ?? '', // Providing default empty string
+      uId: json['uId'],
     );
   }
 
@@ -49,6 +52,7 @@ class User {
       'role': user.role,
       'phoneNumber': user.phoneNumber,
       'imageUrl': user.imageUrl,
+      'uId': user.uId,
     };
   }
 

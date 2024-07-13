@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/request_controller.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/models/request.dart';
+import 'package:savdosanoatapp/services/location_service.dart';
 import 'package:savdosanoatapp/views/widget/animated_widget.dart';
 import 'package:savdosanoatapp/views/widget/loding_widget.dart'; // Corrected typo in import
 
@@ -63,6 +64,8 @@ class _AddNewRequestState extends State<AddNewRequest> {
         }
       }
 
+      final location = await LocationService.getCurrentLocation();
+
       // Create a new request
       final request = Request(
         eId: eId,
@@ -72,11 +75,15 @@ class _AddNewRequestState extends State<AddNewRequest> {
         imageUrls: imageUrls,
         id: id,
         fId: "",
+        lat: location!.latitude!,
+        long: location.longitude!,
       );
 
       // Save the request to Firestore
       await addRequestController.saveRequestToFirestore(request);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // Close loading dialog
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // Close AddNewRequest screen
     }
   }

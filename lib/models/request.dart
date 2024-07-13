@@ -8,6 +8,8 @@ class Request {
   final List<String> imageUrls;
   final int id;
   final String fId;
+  final double lat;
+  final double long;
 
   Request({
     required this.eId,
@@ -17,6 +19,8 @@ class Request {
     required this.imageUrls,
     required this.id,
     required this.fId,
+    required this.lat,
+    required this.long,
   });
 
   // Convert Request object to a Map for Firestore
@@ -28,6 +32,8 @@ class Request {
       'description': description,
       'imageUrls': imageUrls,
       'id': id,
+      'lat': lat,
+      'long': long,
     };
   }
 
@@ -41,6 +47,8 @@ class Request {
       description: query['description'],
       imageUrls: List<String>.from(query['imageUrls']),
       id: query['id'],
+      lat: query['lat'],
+      long: query['long'],
     );
   }
 }

@@ -16,8 +16,8 @@ class ManegerPage extends StatefulWidget {
 
 class _ManegerPageState extends State<ManegerPage> {
   List<Widget> screens = <Widget>[
-    HomePage(),
-    ProfileScreen(),
+    const HomePage(),
+    const ProfileScreen(),
   ];
   int curentindex = 0;
   @override

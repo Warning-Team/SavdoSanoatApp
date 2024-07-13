@@ -5,14 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:savdosanoatapp/controllers/request_controller.dart';
 import 'package:savdosanoatapp/controllers/user_controller.dart';
 import 'package:savdosanoatapp/firebase_options.dart';
-import 'package:savdosanoatapp/views/screens/edit_profile.dart';
+import 'package:savdosanoatapp/services/location_service.dart';
 import 'package:savdosanoatapp/views/screens/onboarding_screen.dart';
-import 'package:savdosanoatapp/views/screens/profile_screen.dart';
-import 'package:savdosanoatapp/views/screens/request_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await LocationService.init();
   runApp(const MyApp());
 }
 
@@ -39,8 +38,7 @@ class _MyAppState extends State<MyApp> {
               scaffoldBackgroundColor: Colors.blue.shade100,
               primaryColor: Colors.blue.shade100,
               appBarTheme: AppBarTheme(backgroundColor: Colors.blue.shade100),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                  backgroundColor: Colors.blue.shade100),
+              bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Colors.blue.shade100),
               pageTransitionsTheme: const PageTransitionsTheme(
                 builders: {
                   TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -48,7 +46,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: OnboardingScreen(),
+            home: const OnboardingScreen(),
           );
         },
       ),
