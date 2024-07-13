@@ -28,21 +28,13 @@ class _PhotoGalaryCameraState extends State<PhotoGalaryCamera> {
   void _uploadImage() async {
     if (widget.imageFile != null && userController.user != null) {
       ProgresIndicatior.showProgressDialog(context);
-      print(1);
       await userController.editImage(
           widget.imageFile!, userController.user!.userId);
-      print(2);
       if (context.mounted) {
-        print(3);
         Navigator.pop(context); // Close the progress dialog
         Navigator.pop(context); // Close the image picker dialog
       }
-      print(4);
     } else {
-      print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-      print(widget.imageFile);
-      print(userController.user!.id);
-      print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
     }
   }
 
