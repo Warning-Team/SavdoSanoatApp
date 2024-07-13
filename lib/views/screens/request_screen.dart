@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:savdosanoatapp/controllers/client_controller.dart';
+import 'package:savdosanoatapp/models/client.dart';
 import 'package:savdosanoatapp/models/request.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-// ignore: must_be_immutable
 class RequestScreen extends StatefulWidget {
-  Request request;
+  final Request request;
   RequestScreen({super.key, required this.request});
 
   @override
@@ -12,7 +13,30 @@ class RequestScreen extends StatefulWidget {
 }
 
 class _RequestScreenState extends State<RequestScreen> {
-  final clientController = ClientController();
+  Client? client;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ClientController.getClinetByClientId(widget.request.cId).then((value) {
+      if (value['error'] == null) {
+        setState(() {
+          client = Client.fromJson(value, "");
+        });
+      }
+    });
+  }
+
+  void _openGoogleMaps(double latitude, double longitude) async {
+    final String googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude";
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl));
+    } else {
+      throw 'Could not open the map.';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,80 +44,83 @@ class _RequestScreenState extends State<RequestScreen> {
         title: const Text("Request"),
         centerTitle: true,
       ),
-      body: Flexible(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Flexible(
+            Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    title: const Text(
+                      "Company Name",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    trailing: Text(
+                      client != null ? client!.companyName : "Loading...",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text(
+                      "STIR",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    trailing: Text(
+                      client != null ? client!.stir.toString() : "Loading...",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text(
+                      "Phone Number",
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    trailing: Text(
+                      client != null ? client!.phoneNumber : "Loading...",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                     Card(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: const Text(
-                              "company name",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            trailing: Text(
-                              clientController.data.companyName,
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                              "strir",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            trailing: Text(
-                              clientController.data.stir.toString(),
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                              "phone number",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            trailing: Text(
-                              clientController.data.phoneNumber,
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 150,
-                        ),
-                        itemBuilder: (ctx, index) {
-                          return Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: Image.network(
-                              "",
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                  ],
+                child: Text(
+                  widget.request.description,
+                  style: const TextStyle(fontSize: 17),
                 ),
               ),
+            ),
+            TextButton(
+              onPressed: () {
+                _openGoogleMaps(widget.request.lat, widget.request.long);
+              },
+              child: const Text(
+                " Location",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 150,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+              ),
+              itemCount: widget.request.imageUrls.length,
+              itemBuilder: (ctx, index) {
+                return Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.network(
+                    widget.request.imageUrls[index],
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             ),
           ],
         ),

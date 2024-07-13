@@ -13,13 +13,13 @@ class Client {
     required this.stir,
   });
 
-  // factory Client.fromJson(Map<String, dynamic> json, String key) {
-  //   return Client(
-  //     id: json['id'] ?? 0,
-  //     companyName: json['companyName'] ?? "",
-  //     eId: json['eId'] ?? 0,
-  //     phoneNumber: json['phoneNumber'] ?? "",
-  //     stir: json['stir'] ?? 0,
-  //   );
-  // }
+  factory Client.fromJson(Map<dynamic, dynamic> json, String key) {
+    return Client(
+      id: json['id'] ?? 0,
+      companyName: json['companyName'] ?? "",
+      eId: json['eId'] ?? 0,
+      phoneNumber: json['phoneNumber'] ?? "",
+      stir: json['stir'] ?? 0,
+    );
+  }
 }

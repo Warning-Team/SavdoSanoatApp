@@ -32,8 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (date != null && userId != null) {
       user = await UserLoginService.getUser(userId);
       DateTime dateTime = DateTime.parse(date);
-      print(dateTime);
-      Appconst.isEnter = DateTime.now().isAfter(dateTime);
+      Appconst.isEnter = DateTime.now().isBefore(dateTime);
     }
   }
 
