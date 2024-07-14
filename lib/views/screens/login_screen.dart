@@ -53,27 +53,49 @@ class _LoginScreenState extends State<LoginScreen> {
         isLoading = true;
       });
 
-      Map<String, dynamic> checkData = await UserLoginService.checkUser(loginData, passwordData);
+      try {
+        Map<String, dynamic> checkData = await UserLoginService.checkUser(loginData, passwordData);
 
-      if (checkData['status'] == true) {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        await sharedPreferences.setString('date', DateTime.now().toString());
-        await sharedPreferences.setString('user', checkData['user'].userId);
-        Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(
-            builder: (context) => const OnboardingScreen(),
-          ),
-        );
-      } else {
+        if (checkData['status'] == true) {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          await sharedPreferences.setString('date', DateTime.now().toString());
+          await sharedPreferences.setString('user', checkData['user'].userId);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ManegerPage(
+                user: checkData['user'],
+              ),
+            ),
+          );
+        } else {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (ctx) => AlertDialog(
+              content: Text(
+                checkData['action'],
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Qayta urinish"),
+                ),
+              ],
+            ),
+          );
+        }
+      } catch (e) {
         showDialog(
           barrierDismissible: false,
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (ctx) => AlertDialog(
             content: Text(
-              checkData['action'],
+              'Xatolik yuz berdi: $e',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             actions: [
@@ -86,11 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         );
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
       }
-
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 

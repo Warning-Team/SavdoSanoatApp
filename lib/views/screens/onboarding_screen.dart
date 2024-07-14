@@ -41,16 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => StreamBuilder(
-            stream: ath.FirebaseAuth.instance.userChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return const LoginScreen();
-              } else {
-                return ManegerPage(user: user!,);
-              }
-            },
-          ),),
+        MaterialPageRoute(builder: (context) => Appconst.isEnter ? ManegerPage(user: user!) : const LoginScreen()),
       );
     });
   }
