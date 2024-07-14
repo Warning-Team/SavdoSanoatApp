@@ -155,9 +155,9 @@ class _EditProfileState extends State<EditProfile> {
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 15),
-                    child: const Text(
+                    child: Text(
                       "Save",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18.sp),
                     ),
                   ),
                 ),

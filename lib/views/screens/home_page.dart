@@ -42,8 +42,7 @@ class _HomePageState extends State<HomePage> {
                         height: 44.w,
                       )
                     : FadeInImage(
-                        placeholder:
-                            const AssetImage("assets/profile/default.png"),
+                        placeholder: const AssetImage("assets/profile/default.png"),
                         image: NetworkImage(user.imageUrl),
                         fit: BoxFit.cover,
                         width: 44.w,
@@ -87,13 +86,11 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         user.workPlace,
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "ID: ${user.id}",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

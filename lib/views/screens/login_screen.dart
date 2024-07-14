@@ -6,7 +6,6 @@ import 'package:savdosanoatapp/services/http_service/user_login_service.dart';
 import 'package:savdosanoatapp/utils/inputvalidatsiya.dart';
 import 'package:savdosanoatapp/utils/mediaquery.dart';
 import 'package:savdosanoatapp/views/screens/maneger_page.dart';
-import 'package:savdosanoatapp/views/screens/onboarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
