@@ -33,9 +33,12 @@ class _PhotoGalaryCameraState extends State<PhotoGalaryCamera> {
       if (context.mounted) {
         // ignore: use_build_context_synchronously
         Navigator.pop(context); // Close the progress dialog
+        Navigator.pop(context); // Close the progress dialog
+        Navigator.pop(context); // Close the progress dialog
+
         // ignore: use_build_context_synchronously
       }
-    } 
+    }
   }
 
   @override

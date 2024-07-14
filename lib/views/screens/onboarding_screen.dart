@@ -40,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Appconst.isEnter ? ManegerPage(user: user!) : const LoginScreen()),
+        MaterialPageRoute(builder: (context) => !Appconst.isEnter ? ManegerPage(user: user!) : const LoginScreen()),
       );
     });
   }
